@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring Sensor Flocify</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .card { border: 1px solid #ccc; border-radius: 8px; padding: 16px; margin-bottom: 10px; }
+        .card h2 { margin-top: 0; }
+        #timestamp { font-size: 0.8em; color: #666; }
+    </style>
+</head>
+<body>
+
+    <h1>Data Sensor Real-Time</h1>
+    <p>Data diperbarui setiap 5 detik.</p>
+    <p id="timestamp">Timestamp: <em>Menunggu data...</em></p>
+
+    <div class="card">
+        <h2>Suhu Air</h2>
+        <p id="suhu">-- °C</p>
+    </div>
+
+    <div class="card">
+        <h2>pH Air</h2>
+        <p id="ph">--</p>
+    </div>
+
+    <div class="card">
+        <h2>TDS (Total Dissolved Solids)</h2>
+        <p id="tds">-- ppm</p>
+    </div>
+    
+    <div class="card">
+        <h2>Jarak Pakan</h2>
+        <p id="jarak">-- cm</p>
+    </div>
+
+    <script>
+        // Fungsi untuk mengambil dan menampilkan data sensor
+        async function updateSensorReadings() {
+            try {
+                // Panggil API yang berjalan di server lokal Anda
+                const response = await fetch('http://localhost:3000/api/sensor');
+                const result = await response.json();
+
+                // Cek apakah ada data yang valid
+                if (result && result.data) {
+                    const sensorData = result.data;
+
+                    // Update elemen HTML dengan data baru
+                    document.getElementById('suhu').innerText = `${sensorData.suhu.toFixed(2)} °C`;
+                    document.getElementById('ph').innerText = sensorData.ph.toFixed(2);
+                    document.getElementById('tds').innerText = `${sensorData.tds.toFixed(0)} ppm`;
+                    document.getElementById('jarak').innerText = `${sensorData.jarak} cm`;
+
+                    // Update timestamp
+                    document.getElementById('timestamp').innerText = `Data diterima pada: ${new Date(result.timestamp).toLocaleTimeString()}`;
+                } else {
+                    console.log("Menunggu data sensor...", result.message);
+                }
+
+            } catch (error) {
+                console.error("Gagal mengambil data sensor:", error);
+                document.getElementById('timestamp').innerText = "Error: Tidak bisa terhubung ke server API.";
+            }
+        }
+
+        // Panggil fungsi pertama kali saat halaman dimuat
+        updateSensorReadings();
+
+        // Atur interval untuk memanggil fungsi setiap 5 detik (5000 milidetik)
+        setInterval(updateSensorReadings, 5000);
+    </script>
+
+</body>
+</html>

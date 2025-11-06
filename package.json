@@ -1,0 +1,21 @@
+{
+  "name": "server-api",
+  "version": "1.0.0",
+  "description": "API server to get data from MQTT",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "mqtt",
+    "api",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "mqtt": "^5.7.0"
+  }
+}

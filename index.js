@@ -67,6 +67,11 @@ client.on('error', (err) => {
 app.use(cors()); // Mengizinkan akses dari domain lain (Penting untuk web)
 app.use(express.json());
 
+// Tambahkan endpoint untuk alamat utama (root)
+app.get('/', (req, res) => {
+    res.send('Selamat datang di Flocify API Server! Akses data di /api/sensor');
+});
+
 // Endpoint utama untuk mendapatkan data sensor terbaru
 app.get('/api/sensor', (req, res) => {
     res.json(latestSensorData);

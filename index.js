@@ -3,7 +3,7 @@ const mqtt = require('mqtt');
 const cors = require('cors');
 
 const app = express();
-const port = 3000; // Anda bisa ganti port jika perlu
+// const port = 3000; // Anda bisa ganti port jika perlu
 
 // --- Konfigurasi MQTT (Sesuai dengan kode ESP32 Anda) ---
 const MQTT_BROKER_URL = 'mqtt://broker.hivemq.com';
@@ -77,7 +77,9 @@ app.get('/api/sensor', (req, res) => {
     res.json(latestSensorData);
 });
 
-app.listen(port, () => {
-    console.log(`🚀 Server API berjalan di http://localhost:${port}`);
-    console.log(`👉 Akses data sensor terbaru melalui: GET http://localhost:${port}/api/sensor`);
+// Ambil port dari environment variable, atau gunakan 3000 jika berjalan lokal
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Server API berjalan di port ${PORT}`);
 });
